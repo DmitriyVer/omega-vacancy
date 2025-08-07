@@ -1,0 +1,20 @@
+import os
+import telebot
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHANNEL_ID = os.getenv("DEST_CHANNEL_ID")
+
+bot = telebot.TeleBot(BOT_TOKEN)
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, "Бот запущен и готов публиковать вакансии!")
+
+@bot.message_handler(content_types=['text'])
+def post_to_channel(message):
+    bot.send_message(CHANNEL_ID, message.text)
+
+bot.polling(none_stop=True)
